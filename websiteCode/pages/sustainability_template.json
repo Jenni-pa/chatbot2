@@ -1,0 +1,68 @@
+{
+    "companies": {
+        "0": {
+            "name": "ConocoPhillips",
+            "origin": "United States"
+        },
+        "1": {
+            "name": "Equinor",
+            "origin": "Norway"
+        },
+        "2": {
+            "name": "Eni",
+            "origin": "Italy"
+        }
+    },
+    "topics": {
+        "GHG Reduction Targets": {
+            "0": "Targeting 50-60% reduction in Scope 1 and 2 GHG intensity by 2030.",
+            "1": "Aiming to reduce upstream CO2 intensity to 6 kg/boe by 2030.",
+            "2": "Committed to achieving net-zero Scope 1 and 2 emissions by 2035."
+        },
+        "Carbon Capture and Storage (CCS)": {
+            "0": "Progressing CCS initiatives across the U.S. Gulf Coast.",
+            "1": "Northern Lights project targets 1.5 million tonnes CO2 annually.",
+            "2": "Ravenna CCS Phase 2 aims for 4 Mtpa CO2 storage by 2030."
+        },
+        "Renewable Energy Investments": {
+            "0": "Exploring hydrogen and renewable energy transitions globally.",
+            "1": "Plans to install 12-16 GW renewable capacity by 2030.",
+            "2": "Plenitude targets 15 GW renewable capacity by 2030."
+        },
+        "Hydrogen and Low-Carbon Fuels": {
+            "0": "Developing low-carbon ammonia and hydrogen solutions.",
+            "1": "H2BE project focuses on low-carbon hydrogen from natural gas.",
+            "2": "Green and blue hydrogen production initiatives in Italy."
+        },
+        "Sustainable Community Programs": {
+            "0": "Investing in community resilience through climate adaptation projects.",
+            "1": "Partnerships with local stakeholders for energy access and education.",
+            "2": "Over 100 socio-economic initiatives in operational regions by 2030."
+        },
+        "Energy Transition Goals": {
+            "0": "Advocating for an economy-wide price on carbon.",
+            "1": "Focused on building a competitive offshore wind portfolio.",
+            "2": "Committed to transforming the energy mix by 2050."
+        },
+        "Climate Strategy Governance": {
+            "0": "Incorporated climate metrics in corporate performance reviews.",
+            "1": "Aligned climate policies with TCFD recommendations.",
+            "2": "Enhanced transparency in reporting climate-related risks."
+        },
+        "Innovation in Carbon Offset": {
+            "0": "Investing in nature-based carbon offset programs.",
+            "1": "Partnered on Direct Ocean Capture technology pilots.",
+            "2": "Focus on natural climate solutions for residual emissions."
+        },
+        "Methane Emission Reduction": {
+            "0": "Committed to achieving near-zero methane emissions by 2030.",
+            "1": "Implemented advanced satellite monitoring of methane leaks.",
+            "2": "Received UNEP Gold Standard for methane emission reporting."
+        },
+        "Circular Economy Initiatives": {
+            "0": "Prioritizing circular energy processes in new projects.",
+            "1": "Expanded recycling and reuse in chemical production.",
+            "2": "Advancing biorefinery operations for sustainable biofuels."
+        }
+    }
+}
