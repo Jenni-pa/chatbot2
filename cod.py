@@ -45,4 +45,4 @@ def askgpt(prompt):
     
     return finishedResponse
             
-askgpt("Explain BPs stance to sustainability")
+#askgpt("Explain BPs stance to sustainability")
