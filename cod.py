@@ -6,6 +6,7 @@ def askgpt(prompt):
     orgKey = os.getenv("OPEN_AI_ORG_KEY")
     projectKey = os.getenv("OPEN_AI_PROJECT_KEY")
     vectorStoreID = os.getenv("OPEN_AI_VECTOR_STORE_ID")
+    assistantID = os.getenv("OPEN_AI_ASSISTANT_ID")
 
     client = OpenAI(
         api_key=apiKey,
@@ -14,7 +15,7 @@ def askgpt(prompt):
     )
 
     stream = client.beta.threads.create_and_run(
-        assistant_id="asst_tNrPc2cTx22OHcF4kXnVOqic",
+        assistant_id=assistantID,
         model= "gpt-4o-mini",
         instructions= "You are acting as a sustainability tool.",
         tools= [
