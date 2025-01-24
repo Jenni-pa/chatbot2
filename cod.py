@@ -1,18 +1,29 @@
 from openai import OpenAI
 import os
 
-def askgpt(prompt):
-    apiKey = os.getenv("OPEN_AI_API_KEY")
-    orgKey = os.getenv("OPEN_AI_ORG_KEY")
-    projectKey = os.getenv("OPEN_AI_PROJECT_KEY")
-    vectorStoreID = os.getenv("OPEN_AI_VECTOR_STORE_ID")
-    assistantID = os.getenv("OPEN_AI_ASSISTANT_ID")
+apiKey = os.getenv("OPEN_AI_API_KEY")
+orgKey = os.getenv("OPEN_AI_ORG_KEY")
+projectKey = os.getenv("OPEN_AI_PROJECT_KEY")
+vectorStoreID = os.getenv("OPEN_AI_VECTOR_STORE_ID")
+assistantID = os.getenv("OPEN_AI_ASSISTANT_ID")
 
-    client = OpenAI(
-        api_key=apiKey,
-        organization=orgKey,
-        project=projectKey,
+client = OpenAI(
+    api_key=apiKey,
+    organization=orgKey,
+    project=projectKey,
+)
+
+def fileupload(uploaded_file):
+    return client.files.create(
+        file=open(uploaded_file),
+        purpose="assistants"
     )
+
+def askgpt(prompt, newCompanyId):
+    attachment = None if newCompanyId is None else {
+        "file_id": newCompanyId,
+        "tools": [{"type": "file_search"}]
+        }
 
     stream = client.beta.threads.create_and_run(
         assistant_id=assistantID,
@@ -33,7 +44,13 @@ def askgpt(prompt):
                 }
             }, 
             "messages": [
-                {"role": "user", "content": prompt}
+                {
+                    "role": "user", 
+                    "content": prompt, 
+                    "attachments": [
+                        attachment
+                    ]
+                }
             ]
         },
         stream=True
