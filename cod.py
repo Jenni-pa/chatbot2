@@ -3,11 +3,14 @@ import os
 
 def askgpt(prompt):
     apiKey = os.getenv("OPEN_AI_API_KEY")
+    orgKey = os.getenv("OPEN_AI_ORG_KEY")
+    projectKey = os.getenv("OPEN_AI_PROJECT_KEY")
+    vectorStoreID = os.getenv("OPEN_AI_VECTOR_STORE_ID")
 
     client = OpenAI(
         api_key=apiKey,
-        organization='org-u9i9OwAXA07gcPQKEuegv0O9',
-        project='proj_KRs4JboRE6pdsFCWKMiChsqj',
+        organization=orgKey,
+        project=projectKey,
     )
 
     stream = client.beta.threads.create_and_run(
@@ -24,7 +27,7 @@ def askgpt(prompt):
             "tool_resources": {
                 "file_search" : {
                     "vector_store_ids": [
-                        "vs_OcLmRv10mqbD15nrcp0zk2Az"
+                        vectorStoreID
                     ]
                 }
             }, 
