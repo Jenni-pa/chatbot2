@@ -15,7 +15,7 @@ client = OpenAI(
 
 def fileupload(uploaded_file):
     return client.files.create(
-        file=open(uploaded_file),
+        file=uploaded_file,
         purpose="assistants"
     )
 

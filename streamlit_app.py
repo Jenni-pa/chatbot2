@@ -8,7 +8,7 @@ def run_command_page():
     uploaded_file = st.file_uploader("Choose a file",type=['txt'])
     NameOfCompany = st.text_input('Company name:')
     if st.button("add company"):
-        newCompanyId = fileupload(uploaded_file).id
+        newCompanyId = fileupload(uploaded_file.read()).id
         st.write("Company added successfully")        
 
 
