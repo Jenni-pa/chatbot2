@@ -157,7 +157,7 @@ else :
                         "City": None,         # Missing city
                         "size": 90000         # Default size
                         }
-                        st.session_state.newCompany = fileupload(uploaded_file.read())
+                        st.session_state.newCompany = fileupload(uploaded_file.name, uploaded_file.read())
                         st.session_state.companies._append(new_company, ignore_index=True)
                         addedCompany = True
 

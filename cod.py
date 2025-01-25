@@ -13,9 +13,9 @@ client = OpenAI(
     project=projectKey,
 )
 
-def fileupload(uploaded_file):
+def fileupload(uploaded_file_name, uploaded_file_contents):
     return client.files.create(
-        file=uploaded_file,
+        file= (uploaded_file_name, uploaded_file_contents),
         purpose="assistants"
     )
 
