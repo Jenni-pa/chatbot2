@@ -135,7 +135,9 @@ elif selection == "Overall":
 else:
         chosenCategory = st.radio("Select the subcategory", ["CO2 emissions", "Decarbonization Strategies & Initiatives", "Natural Resource Management", "Workers Rights", "Health & Safety Compliance", "Diversity, Equality and Inclusion", "Regulatory Compliance", "Sustainability Reporting", "Key Milestones & Achievements", "ESG-related Initiatives", "Awareness Regarding ESG-Responsibilities"])
 
-newCompany = None
+if st.session_state.newCompany == None : 
+    st.session_state.newCompany = None
+
 if len(pickedCompanies) > 2:
     st.markdown("You can not add another company, please deselect at least one of your chosen companies to upload your own.")
 else :
@@ -155,7 +157,7 @@ else :
                         "City": None,         # Missing city
                         "size": 90000         # Default size
                         }
-                        newCompany = fileupload(uploaded_file.read())
+                        st.session_state.newCompany = fileupload(uploaded_file.read())
                         companies._append(new_company, ignore_index=True)
                         addedCompany = True
 
@@ -175,34 +177,34 @@ if len(pickedCompanies) == 1:
         st.markdown(prompts["one company"].format(category=chosenCategory, company=pickedCompanies[0])+" Also show me a meaningful graph to visualize key numbers.")
         if st.button("send question"):
             st.write(prompts["one company"].format(category=chosenCategory, company=pickedCompanies[0])+" Also show me a meaningful graph to visualize key numbers.")
-            st.write(newCompany.id if newCompany is not None else None )
-            result = askgpt(prompts["one company"].format(category=chosenCategory, company=pickedCompanies[0])+" Also show me a meaningful graph to visualize key numbers.", newCompany.id if newCompany is not None else None )
+            st.write(st.session_state.newCompany.id if st.session_state.newCompany is not None else None )
+            result = askgpt(prompts["one company"].format(category=chosenCategory, company=pickedCompanies[0])+" Also show me a meaningful graph to visualize key numbers.", st.session_state.newCompany.id if st.session_state.newCompany is not None else None )
     else:
         st.markdown(prompts["one company"].format(category=chosenCategory, company=pickedCompanies[0]))
         if st.button("send question"):
             st.write(prompts["one company"].format(category=chosenCategory, company=pickedCompanies[0]))
-            st.write(newCompany.id if newCompany is not None else None )
-            result = askgpt(prompts["one company"].format(category=chosenCategory, company=pickedCompanies[0]), newCompany.id if newCompany is not None else None)
+            st.write(st.session_state.newCompany.id if st.session_state.newCompany is not None else None )
+            result = askgpt(prompts["one company"].format(category=chosenCategory, company=pickedCompanies[0]), st.session_state.newCompany.id if st.session_state.newCompany is not None else None)
 elif len(pickedCompanies) == 2:
     if graphicalOutput == "yes":
         st.markdown(prompts["2 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1])+" Also show me a meaningful graph to visualize key numbers and differences.")
         if st.button("send question"):
-            result = askgpt(prompts["2 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1])+" Also show me a meaningful graph to visualize key numbers and differences.", newCompany.id if newCompany is not None else None)
+            result = askgpt(prompts["2 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1])+" Also show me a meaningful graph to visualize key numbers and differences.", st.session_state.newCompany.id if st.session_state.newCompany is not None else None)
     else:
         st.markdown(prompts["2 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1]))
         if st.button("send question"):
             st.write(prompts["2 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1]))
-            st.write(newCompany.id if newCompany is not None else None )
-            result = askgpt(prompts["2 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1]), newCompany.id if newCompany is not None else None)
+            st.write(st.session_state.newCompany.id if st.session_state.newCompany is not None else None )
+            result = askgpt(prompts["2 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1]), st.session_state.newCompany.id if st.session_state.newCompany is not None else None)
 elif len(pickedCompanies) == 3:
     if graphicalOutput == "yes":
         st.markdown(prompts["3 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1], companyC=pickedCompanies[2])+" Also show me a meaningful graph to visualize key numbers and differences.")
         if st.button("send question"):
-            result = askgpt(prompts["3 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1], companyC=pickedCompanies[2])+" Also show me a meaningful graph to visualize key numbers and differences.", newCompany.id if newCompany is not None else None)
+            result = askgpt(prompts["3 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1], companyC=pickedCompanies[2])+" Also show me a meaningful graph to visualize key numbers and differences.", st.session_state.newCompany.id if st.session_state.newCompany is not None else None)
     else:
         st.markdown(prompts["3 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1], companyC=pickedCompanies[2]))
         if st.button("send question"):
-            result = askgpt(prompts["3 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1], companyC=pickedCompanies[2]), newCompany.id if newCompany is not None else None)
+            result = askgpt(prompts["3 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1], companyC=pickedCompanies[2]), st.session_state.newCompany.id if st.session_state.newCompany is not None else None)
 
 st.markdown(f"Command Output: {result}", unsafe_allow_html=True)
 
