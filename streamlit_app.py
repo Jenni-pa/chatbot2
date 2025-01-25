@@ -5,6 +5,32 @@ import streamlit.components.v1 as components
 from streamlit import session_state as ss
 from cod import askgpt, fileupload
 
+def cssFix():
+    # Remove whitespace from the top of the page and sidebar
+        st.markdown("""
+                <style>
+                    .stAppHeader {
+                        display: none;
+                    }
+                    .stMainBlockContainer {
+                        padding-top: 10px;
+                        padding-bottom: 10px;
+                    }
+                    .stIFrame {
+                        display: none;
+                    }
+                div[data-testid="stBottomBlockContainer"] {
+                    padding-bottom: 20px;
+                    padding-top: 20px;
+                    padding-right: 40px;
+                    padding-left: 40px;
+                    margin-top: -15px;
+                }
+                </style>
+                """, unsafe_allow_html=True)
+
+cssFix()
+
 st.title("Find companies you are looking for")
 
 companies = {
@@ -202,28 +228,5 @@ st.markdown(f"Command Output: {result}", unsafe_allow_html=True)
 # remove sources
 # reformat to look better
 
-def cssFix():
-    # Remove whitespace from the top of the page and sidebar
-        st.markdown("""
-                <style>
-                    .stAppHeader {
-                        display: none;
-                    }
-                    .stMainBlockContainer {
-                        padding-top: 10px;
-                        padding-bottom: 10px;
-                    }
-                    .stIFrame {
-                        display: none;
-                    }
-                div[data-testid="stBottomBlockContainer"] {
-                    padding-bottom: 20px;
-                    padding-top: 20px;
-                    padding-right: 40px;
-                    padding-left: 40px;
-                    margin-top: -15px;
-                }
-                </style>
-                """, unsafe_allow_html=True)
 
-cssFix()
+
