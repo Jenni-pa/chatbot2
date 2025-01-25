@@ -8,6 +8,8 @@ import re
 from io import StringIO
 
 st.title("Find companies you are looking for")
+logoBinary = open("Logo.png", "rb")
+st.logo(logoBinary)
 
 companies = {
     "Saudi Aramco": {
@@ -223,6 +225,5 @@ else:
 
 st.markdown(f"Command Output: {response}", unsafe_allow_html=True)
 
-# visualization graph
 # reformat to look better --> chat output for output
 # add logo to corner *ESG.IQ*
