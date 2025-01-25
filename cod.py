@@ -63,5 +63,3 @@ def askgpt(prompt, newCompanyId):
             finishedResponse += eventText
     
     return finishedResponse
-            
-#askgpt("Explain BPs stance to sustainability")

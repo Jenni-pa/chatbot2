@@ -101,9 +101,11 @@ if 'addedCompany' not in st.session_state:
     st.session_state['addedCompany'] = None
 addedCompanyChosen = None
 
-# add check that map added companies less than 3
+st.markdown("You can compare up to three companies at once.") 
+
 try:
     selectedcompanies = event.selection["objects"]["companies"]
+    selectedcompanies = selectedcompanies[:3]
 except :
     selectedcompanies = []
 
@@ -162,26 +164,20 @@ else :
                         st.session_state.companies._append(new_company, ignore_index=True)
                         st.session_state.addedCompany = True
 
+graphicalOutput = None
+graphicalOutput = st.radio("Do you want to visualize your question with a graph?", ["yes","no"])
+result = None
 
 if st.session_state.addedCompany == True :
     addedCompanyChosen = st.radio(f"Select your added company {NameOfCmpny}?", ["yes","no"])
 if addedCompanyChosen == "yes":
     pickedCompanies.append(NameOfCmpny)
 
-# muss noch vor add company
-graphicalOutput = None
-graphicalOutput = st.radio("Do you want to visualize your question with a graph?", ["yes","no"])
-result = None
-
 if st.button("send question"):
     if len(pickedCompanies) == 1:
         if graphicalOutput == "yes":
-            st.write(prompts["one company"].format(category=chosenCategory, company=pickedCompanies[0])+" Also show me a meaningful graph to visualize key numbers.")
-            st.write(st.session_state.newCompany.id if st.session_state.newCompany is not None else None )
             result = askgpt(prompts["one company"].format(category=chosenCategory, company=pickedCompanies[0])+" Also show me a meaningful graph to visualize key numbers.", st.session_state.newCompany.id if st.session_state.newCompany is not None else None )
         else:
-            st.write(prompts["one company"].format(category=chosenCategory, company=pickedCompanies[0]))
-            st.write(st.session_state.newCompany.id if st.session_state.newCompany is not None else None )
             result = askgpt(prompts["one company"].format(category=chosenCategory, company=pickedCompanies[0]), st.session_state.newCompany.id if st.session_state.newCompany is not None else None)
     elif len(pickedCompanies) == 2:
         if graphicalOutput == "yes":
@@ -201,27 +197,7 @@ if st.button("send question"):
 
 st.markdown(f"Command Output: {result}", unsafe_allow_html=True)
 
-# ASCI doc parser? 
-
-#def run_command_page():
-#    st.title("Ask GPT")
-#    st.write("Testing calling the script to interact with the openai api")
-#
-#    uploaded_file = st.file_uploader("Choose a file",type=['txt'])
-#    NameOfCompany = st.text_input('Company name:')
-#    st.session_state.newCompany = None
-#
-#    if st.button("add company"):
-#        st.session_state.newCompany = fileupload(uploaded_file.read())
-#        st.write("Company added successfully")        
-#
-#
-#    if st.button("Send request now", "without_attach,emt") and st.session_state.newCompany is None:
-#        result = askgpt(f"Explain BPs stance to sustainability and compare with {NameOfCompany}" , None)
-#        st.write(f"Command Output: {result}")
-#
-#    if st.button("Send request now", "with_attachment") and st.session_state.newCompany is not None:
-#        result = askgpt(f"Explain BPs stance to sustainability and compare with {NameOfCompany}" , st.session_state.newCompany.id)
-#        st.write(f"Command Output: {result}")
-#
-#run_command_page()
+# visualization graph
+# company(ies)
+# remove sources
+# reformat to look better
