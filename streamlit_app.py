@@ -228,7 +228,16 @@ if result is not None:
 else:
     response = ""  # Or handle None as needed
 
-st.markdown(f"Command Output: {response}", unsafe_allow_html=True)
+if 'listOfResponses' not in st.session_state :
+    st.session_state['listOfResponses'] = []
+
+st.session_state['listOfResponses'].append(response)
+
+for message in st.session_state['listOfResponses']:
+    with st.chat_message("ESG.IQ"):
+        st.write(message)
+
+# st.markdown(f"Command Output: {response}", unsafe_allow_html=True)
 
 # reformat to look better --> chat output for output
 # add logo to corner *ESG.IQ*
