@@ -196,8 +196,12 @@ if st.button("send question"):
             st.markdown(prompts["3 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1], companyC=pickedCompanies[2]))
             result = askgpt(prompts["3 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1], companyC=pickedCompanies[2]), st.session_state.newCompany.id if st.session_state.newCompany is not None else None)
 
-
-response = result.replace('【.*】','')
+# Check if the variable is not None
+if result is not None:
+    # Use regex to remove text within parentheses
+    response = re.sub(r"\【[^)]*\】", "", result)
+else:
+    response = ""  # Or handle None as needed
 
 st.markdown(f"Command Output: {response}", unsafe_allow_html=True)
 
