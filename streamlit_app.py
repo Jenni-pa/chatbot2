@@ -174,10 +174,14 @@ if len(pickedCompanies) == 1:
     if graphicalOutput == "yes":
         st.markdown(prompts["one company"].format(category=chosenCategory, company=pickedCompanies[0])+" Also show me a meaningful graph to visualize key numbers.")
         if st.button("send question"):
+            st.write(prompts["one company"].format(category=chosenCategory, company=pickedCompanies[0])+" Also show me a meaningful graph to visualize key numbers.")
+            st.write(newCompany.id if newCompany is not None else None )
             result = askgpt(prompts["one company"].format(category=chosenCategory, company=pickedCompanies[0])+" Also show me a meaningful graph to visualize key numbers.", newCompany.id if newCompany is not None else None )
     else:
         st.markdown(prompts["one company"].format(category=chosenCategory, company=pickedCompanies[0]))
         if st.button("send question"):
+            st.write(prompts["one company"].format(category=chosenCategory, company=pickedCompanies[0]))
+            st.write(newCompany.id if newCompany is not None else None )
             result = askgpt(prompts["one company"].format(category=chosenCategory, company=pickedCompanies[0]), newCompany.id if newCompany is not None else None)
 elif len(pickedCompanies) == 2:
     if graphicalOutput == "yes":
