@@ -203,20 +203,23 @@ if result is not None:
 else:
     response = ""  # Or handle None as needed
 
+if result is not None:
 # bar chart maker for c02 2 companies
-start_marker = "---chart-data-start---"
-end_marker = "---chart-data-end---"
+    start_marker = "---chart-data-start---"
+    end_marker = "---chart-data-end---"
 
-data_start = response.find(start_marker) + len(start_marker)
-data_end = response.find(end_marker)
+    data_start = response.find(start_marker) + len(start_marker)
+    data_end = response.find(end_marker)
 
-data = response[data_start:data_end].strip()
+    data = response[data_start:data_end].strip()
 
-# Convert to DataFrame
-df = pd.read_csv(StringIO(data))
+    # Convert to DataFrame
+    df = pd.read_csv(StringIO(data))
 
-# Display in Streamlit
-st.bar_chart(df.set_index('Year'))
+    # Display in Streamlit
+    st.bar_chart(df.set_index('Year'))
+else:
+    response = ""
 
 st.markdown(f"Command Output: {response}", unsafe_allow_html=True)
 
