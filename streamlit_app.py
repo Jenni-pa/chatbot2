@@ -9,7 +9,7 @@ from io import StringIO
 
 st.markdown('''<style>
             .stLogo {
-                 height: "6rem";
+                 height: 6rem;
             }
             </style>''', unsafe_allow_html=True)
 
