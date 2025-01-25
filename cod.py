@@ -20,10 +20,10 @@ def fileupload(uploaded_file):
     )
 
 def askgpt(prompt, newCompanyId):
-    attachment = None if newCompanyId is None else {
+    attachment = None if newCompanyId is None else [{
         "file_id": newCompanyId,
         "tools": [{"type": "file_search"}]
-        }
+        }]
 
     stream = client.beta.threads.create_and_run(
         assistant_id=assistantID,
@@ -47,9 +47,7 @@ def askgpt(prompt, newCompanyId):
                 {
                     "role": "user", 
                     "content": prompt, 
-                    "attachments": [
-                        attachment
-                    ]
+                    "attachments": attachment
                 }
             ]
         },
