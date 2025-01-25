@@ -204,6 +204,8 @@ if st.button("send question"):
             result = askgpt(prompts["3 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1], companyC=pickedCompanies[2]), st.session_state.newCompany.id if st.session_state.newCompany is not None else None)
 
 if result != None:
+    response = re.sub(r"\【[^)]*\】", "", result)
+
     if (graphicalOutput == "yes" and chosenCategory == "CO2 emissions"):
         # bar chart maker for c02 2 companies
         start_marker = "---chart-data-start---"
@@ -220,7 +222,6 @@ if result != None:
         st.bar_chart(df.set_index('Year'))
 
         # Use regex to remove text within parentheses and data
-        response = re.sub(r"\【[^)]*\】", "", result)
         response = re.sub(r"(\#{3}(?!.*\#{3})).*", "", response, flags = re.DOTALL)
     else:
         response = result
@@ -235,7 +236,7 @@ if response is not "":
     st.session_state['listOfResponses'].append(response)
 
 for message in st.session_state['listOfResponses']:
-    with st.chat_message("ai", avatar="Avatar.png"):
+    with st.chat_message("user", avatar="Avatar.png"):
         st.write(message)
 
 # st.markdown(f"Command Output: {response}", unsafe_allow_html=True)
