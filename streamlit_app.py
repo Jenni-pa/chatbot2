@@ -200,11 +200,7 @@ if st.button("send question"):
 if result is not None:
     # Use regex to remove text within parentheses
     response = re.sub(r"\【[^)]*\】", "", result)
-else:
-    response = ""  # Or handle None as needed
-
-if result is not None:
-# bar chart maker for c02 2 companies
+    # bar chart maker for c02 2 companies
     start_marker = "---chart-data-start---"
     end_marker = "---chart-data-end---"
 
@@ -221,7 +217,7 @@ if result is not None:
 
     response = re.sub(r"\---chart-data-start---[^)]*\---chart-data-end---", "", result)
 else:
-    response = ""
+    response = ""  # Or handle None as needed
 
 st.markdown(f"Command Output: {response}", unsafe_allow_html=True)
 
