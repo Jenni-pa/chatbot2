@@ -231,7 +231,8 @@ else:
 if 'listOfResponses' not in st.session_state :
     st.session_state['listOfResponses'] = []
 
-st.session_state['listOfResponses'].append(response)
+if response is not None:
+    st.session_state['listOfResponses'].append(response)
 
 for message in st.session_state['listOfResponses']:
     with st.chat_message("ai", avatar="Avatar.png"):
