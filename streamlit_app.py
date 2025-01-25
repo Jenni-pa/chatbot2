@@ -135,8 +135,8 @@ elif selection == "Overall":
 else:
         chosenCategory = st.radio("Select the subcategory", ["CO2 emissions", "Decarbonization Strategies & Initiatives", "Natural Resource Management", "Workers Rights", "Health & Safety Compliance", "Diversity, Equality and Inclusion", "Regulatory Compliance", "Sustainability Reporting", "Key Milestones & Achievements", "ESG-related Initiatives", "Awareness Regarding ESG-Responsibilities"])
 
-if st.session_state.newCompany == None : 
-    st.session_state.newCompany = None
+if 'newCompany' not in st.session_state: 
+    st.session_state['newCompany'] = None
 
 if len(pickedCompanies) > 2:
     st.markdown("You can not add another company, please deselect at least one of your chosen companies to upload your own.")
