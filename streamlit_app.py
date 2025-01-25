@@ -4,6 +4,7 @@ import pandas as pd
 import streamlit.components.v1 as components
 from streamlit import session_state as ss
 from cod import askgpt, fileupload
+import re
 
 st.title("Find companies you are looking for")
 
@@ -196,12 +197,7 @@ if st.button("send question"):
             result = askgpt(prompts["3 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1], companyC=pickedCompanies[2]), st.session_state.newCompany.id if st.session_state.newCompany is not None else None)
 
 
-while "【" in result and "】" in result:
-    # Find the first pair of parentheses
-    start = result.find("【")
-    end = result.find("】", start)
-    # Remove the text within the parentheses, including the parentheses themselves
-    response = result[:start] + result[end + 1:]
+response = re.sub(r"\(.*?\)", "", result)
 
 st.markdown(f"Command Output: {response}", unsafe_allow_html=True)
 
