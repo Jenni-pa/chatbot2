@@ -3,6 +3,7 @@ import pydeck
 import pandas as pd
 import streamlit.components.v1 as components
 from streamlit import session_state as ss
+from cod import askgpt, fileupload
 
 st.title("Find companies you are looking for")
 
@@ -153,7 +154,7 @@ else :
                         "City": None,         # Missing city
                         "size": 90000         # Default size
                         }
-
+                        # fileupload(uploaded_file.read())
                         companies._append(new_company, ignore_index=True)
                         addedCompany = True
 
@@ -170,21 +171,31 @@ graphicalOutput = st.radio("Do you want to visualize your question with a graph?
 if len(pickedCompanies) == 1:
     if graphicalOutput == "yes":
         st.markdown(prompts["one company"].format(category=chosenCategory, company=pickedCompanies[0])+" Also show me a meaningful graph to visualize key numbers.")
+        if st.button("send question"):
+            askgpt(prompts["one company"].format(category=chosenCategory, company=pickedCompanies[0])+" Also show me a meaningful graph to visualize key numbers.")
     else:
         st.markdown(prompts["one company"].format(category=chosenCategory, company=pickedCompanies[0]))
+        if st.button("send question"):
+            askgpt(prompts["one company"].format(category=chosenCategory, company=pickedCompanies[0]))
 elif len(pickedCompanies) == 2:
     if graphicalOutput == "yes":
         st.markdown(prompts["2 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1])+" Also show me a meaningful graph to visualize key numbers and differences.")
+        if st.button("send question"):
+            askgpt(prompts["2 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1])+" Also show me a meaningful graph to visualize key numbers and differences.")
     else:
         st.markdown(prompts["2 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1]))
+        if st.button("send question"):
+            askgpt(prompts["2 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1]))
 elif len(pickedCompanies) == 3:
     if graphicalOutput == "yes":
         st.markdown(prompts["3 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1], companyC=pickedCompanies[2])+" Also show me a meaningful graph to visualize key numbers and differences.")
+        if st.button("send question"):
+            askgpt(prompts["3 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1], companyC=pickedCompanies[2])+" Also show me a meaningful graph to visualize key numbers and differences.")
     else:
         st.markdown(prompts["3 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1], companyC=pickedCompanies[2]))
+        if st.button("send question"):
+            askgpt(prompts["3 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1], companyC=pickedCompanies[2]))
 
-# import streamlit as st
-# from cod import askgpt, fileupload
 
 #def run_command_page():
 #    st.title("Ask GPT")
@@ -208,4 +219,3 @@ elif len(pickedCompanies) == 3:
 #        st.write(f"Command Output: {result}")
 #
 #run_command_page()
-#

@@ -4,8 +4,6 @@ import pandas as pd
 import streamlit.components.v1 as components
 from streamlit import session_state as ss
 
-st.title("Find companies you are looking for")
-
 companies = {
     "Saudi Aramco": {
         "latitude": 26.2777, "longitude": 50.2083, "country": "Saudi Arabia", "city": "Dhahran"
@@ -21,6 +19,9 @@ companies = {
     },
     "Shell PLC (SHEL)": {
         "latitude": 51.5074, "longitude": -0.1278, "country": "UK", "city": "London"
+    },
+    "TotalEnergies SE (TTE)": {
+        "latitude": 48.8955, "longitude": 2.2568, "country": "France", "city": "Courbevoie"
     },
     "Chevron Corp. (CVX)": {
         "latitude": 37.7799, "longitude": -121.9780, "country": "USA", "city": "San Ramon, California"
@@ -66,12 +67,15 @@ companies = {
     }
 }
 
+st.markdown("<h1 style='text-align: center;'>Find companies you are looking for</h1>", unsafe_allow_html=True)
+
 #reformatting companies to be in the same format as Names with their latitude and longitude
 companies = pd.DataFrame(companies.items(), columns=["Name", "properties"])
 #setting latitude and longitude,  the country and city:
 companies[["Latitude", "Longitude", "Country", "City"]] = pd.DataFrame(companies["properties"].tolist(), index=companies.index)
 #adding a size column to the companies dataframe
 companies["size"] = 90000
+#st.write(companies)
 
 point_layer2 = pydeck.Layer(
     "ScatterplotLayer",
@@ -88,6 +92,7 @@ view_state = pydeck.ViewState(
     latitude=48.1351, longitude=11.5820, zoom=3, min_zoom=0, max_zoom=20
 )
 
+
 chart2 = pydeck.Deck(
     point_layer2,
     initial_view_state=view_state,
@@ -96,89 +101,117 @@ chart2 = pydeck.Deck(
 
 event = st.pydeck_chart(chart2, on_select="rerun", selection_mode="multi-object")
 
-addedCompany = None
-addedCompanyChosen = None
-
-# add check that map added companies less than 3
 try:
     selectedcompanies = event.selection["objects"]["companies"]
 except :
     selectedcompanies = []
 
+st.markdown('<style>.mapboxgl-ctrl-bottom-right{display: none;}</style>', unsafe_allow_html=True)
+
+
+# create a streamlit multiselect where the previously selected companies should also appear:
+
 st.session_state["allCompanies"] = companies
 if len(selectedcompanies) > 0:
     company_names = [company["Name"] for company in selectedcompanies]
-    pickedCompanies = st.multiselect("Selected Companie(s)", companies, company_names, max_selections=3)
+    pickedCompanies = st.multiselect("Selected Companie(s)", companies, company_names)
 else:
-    pickedCompanies = st.multiselect("Selected Companie(s)", companies, max_selections=3)
+    pickedCompanies = st.multiselect("Selected Companie(s)", companies)
 
-prompts = {
-        "one company": 
-                "Regarding the {category}, what does {company} say in their annual report and ESG report? Perform a thorough analysis.",
-        "2 companies":
-                "Regarding the {category}, what do {companyA} and {companyB} say in their annual report and ESG report? Perform a thorough analysis and compare the companies.",
-        "3 companies":
-                "Regarding the {category}, what do {companyA}, {companyB} and {companyC} say in their annual report and ESG report? Perform a thorough analysis and compare the companies." 
-}       
-
-options = ["Ecological", "Social", "Governance", "Overall"]
-selection = st.segmented_control("Select the focus area", options, selection_mode="single")
-if selection == "Ecological":
-        chosenCategory = st.radio("Select the subcategory", ["CO2 emissions", "Decarbonization Strategies & Initiatives", "Natural Resource Management"])
-elif selection == "Social":
-        chosenCategory = st.radio("Select the subcategory", ["Workers Rights", "Health & Safety Compliance", "Diversity, Equality and Inclusion"])
-elif selection == "Governance":
-        chosenCategory = st.radio("Select the subcategory", ["Regulatory Compliance", "Sustainability Reporting"])
-elif selection == "Overall":
-        chosenCategory = st.radio("Select the subcategory", ["Key Milestones & Achievements", "ESG-related Initiatives", "Awareness Regarding ESG-Responsibilities"])
-else:
-        chosenCategory = st.radio("Select the subcategory", ["CO2 emissions", "Decarbonization Strategies & Initiatives", "Natural Resource Management", "Workers Rights", "Health & Safety Compliance", "Diversity, Equality and Inclusion", "Regulatory Compliance", "Sustainability Reporting", "Key Milestones & Achievements", "ESG-related Initiatives", "Awareness Regarding ESG-Responsibilities"])
-
-if len(pickedCompanies) > 2:
-    st.markdown("You can not add another company, please deselect at least one of your chosen companies to upload your own.")
-else :
-    st.markdown("Do you want to add a company?")
-    with st.popover("📎",use_container_width=True):
-                #file upload:
-                uploaded_file = st.file_uploader("Choose a file",type=['txt'])
-                NameOfCmpny = st.text_input('Company name:')
-                
-                if st.button("add company"):
-                        st.write("Company added successfully")
-                        new_company = {
-                        "Name": NameOfCmpny,  # The name of the company
-                        "Latitude": None,   # Missing latitude
-                        "Longitude": None,  # Missing longitude
-                        "Country": None,      # Missing country
-                        "City": None,         # Missing city
-                        "size": 90000         # Default size
-                        }
-
-                        companies._append(new_company, ignore_index=True)
-                        addedCompany = True
+try:
+    prompts = {
+    ("Ecological", "CO2 emissions"): "Which performance regarding ecological factors does {company} show according to their annual report and the ESG-report of the company regarding their CO2 emissions? Perform a thorough analysis.",
+    ("Ecological", "Decarbonization Strategies & Initiatives"): "Which concrete initiatives and strategies regarding decarbonizations does {company} show according to their annual report and the ESG-report of the company ? Perform a thorough analysis.",
+    ("Ecological", "Natural Resource Management"): "In which specific ways does {company} address the sustainable management of natural resources according to their annual report and the ESG-report of the company ? Perform a thorough analysis.",
+    ("Social", "Workers Rights"): "In which specific ways does {company} address workers rights according to their annual report and the ESG-report of the company ? Perform a thorough analysis.",
+    ("Social", "Health & Safety Compliance"): "In which specific ways does {company} ensure health and safety compliance according to their annual report and the ESG-report of the company ? Perform a thorough analysis.",
+    ("Social", "Diversity, Equality and Inclusion"): "In which specific ways does {company} ensure diversity, equality and inclusion according to their annual report and the ESG-report of the company ? Perform a thorough analysis.",
+    ("Governance", "Regulatory Compliance"): "In which specific ways does {company} ensure regulatory compliance regarding ESG-aspects according to their annual report and the ESG-report of the company ? Perform a thorough analysis.",
+    ("Governance", "Sustainability Reporting"): "Which specific sustainability reports does {company} provide according to their annual report and the ESG-report of the company ? Perform a thorough analysis.",
+    ("Overall", "Key Milestones & Achievements"): "Analyze the performance of {company} in regard to key milestones and achievements regarding ESG-aspects according to their annual report and the ESG-report? Perform a thorough analysis.",
+    ("Overall", "ESG-related Initiatives"): "Perform a thorough analysis of ESG-related initiatives conducted by {company} according to their annual report and the ESG-report.",
+    ("Overall", "Awareness Regarding ESG-Responsibilities"): "Perform a thorough analysis indicating the awareness of {company} regarding their ESG-responsibilities."
+}
+    lastSelectedCompany = pickedCompanies[-1] if len(pickedCompanies) > 0 else ""
 
 
-if addedCompany == True :
-      addedCompanyChosen = st.radio(f"Select your added company {NameOfCmpny}?", ["yes","no"])
-if addedCompanyChosen == "yes":
-    pickedCompanies.append(NameOfCmpny)
+    with col1:
+            question1 = st.radio("Select the focus area", ["Ecological", "Social", "Governance", "Overall"],horizontal=True)
+    with col2:
+        if question1 == "Ecological":
+            question2 = st.radio("Select the subcategory", ["CO2 emissions", "Decarbonization Strategies & Initiatives", "Natural Resource Management"],horizontal=True)
+        elif question1 == "Social":
+            question2 = st.radio("Select the subcategory", ["Workers Rights", "Health & Safety Compliance", "Diversity, Equality and Inclusion"],horizontal=True)
+        elif question1 == "Governance":
+            question2 = st.radio("Select the subcategory", ["Regulatory Compliance", "Sustainability Reporting"],horizontal=True)
+        elif question1 == "Overall":
+            question2 = st.radio("Select the subcategory", ["Key Milestones & Achievements", "ESG-related Initiatives", "Awareness Regarding ESG-Responsibilities"],horizontal=True)
+        else:
+            question2 = st.radio("Select the subcategory", ["CO2 emissions", "Decarbonization Strategies & Initiatives", "Natural Resource Management", "Workers Rights", "Health & Safety Compliance", "Diversity, Equality and Inclusion", "Regulatory Compliance", "Sustainability Reporting", "Key Milestones & Achievements", "ESG-related Initiatives", "Awareness Regarding ESG-Responsibilities"],horizontal=True)
 
-# muss noch vor add company
-graphicalOutput = None
-graphicalOutput = st.radio("Do you want to visualize your question with a graph?", ["yes","no"])
+        promptz = prompts.get((question1, question2), "No prompt available for the selected options.")
 
-if len(pickedCompanies) == 1:
-    if graphicalOutput == "yes":
-        st.markdown(prompts["one company"].format(category=chosenCategory, company=pickedCompanies[0])+" Also show me a meaningful graph to visualize key numbers.")
-    else:
-        st.markdown(prompts["one company"].format(category=chosenCategory, company=pickedCompanies[0]))
-elif len(pickedCompanies) == 2:
-    if graphicalOutput == "yes":
-        st.markdown(prompts["2 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1])+" Also show me a meaningful graph to visualize key numbers and differences.")
-    else:
-        st.markdown(prompts["2 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1]))
-elif len(pickedCompanies) == 3:
-    if graphicalOutput == "yes":
-        st.markdown(prompts["3 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1], companyC=pickedCompanies[2])+" Also show me a meaningful graph to visualize key numbers and differences.")
-    else:
-        st.markdown(prompts["3 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1], companyC=pickedCompanies[2]))
+    with col3:
+        with st.popover("📎",use_container_width=True):
+            #file upload:
+            uploaded_file = st.file_uploader("Choose a file",type=['txt'])
+            NameOfCmpny = st.text_input('Company name:')
+            if st.button("add company"):
+                st.write("Company added successfully")
+    with col4:
+        if len(pickedCompanies) > 0:
+            ss.is_chat_input_disabled = False
+        else:
+            ss.is_chat_input_disabled = True
+        prompt = st.button("➤",disabled=ss.is_chat_input_disabled,use_container_width=True,help="select companie(s) before asking questions")
+except:
+    print('error')
+
+
+with col50:
+    # Initialize chat history
+    if "Chats" not in st.session_state:
+        st.session_state.Chats = [[]]
+        st.session_state.Chats[0].append({"role": "AI", "content": "Hello, I am Sustaino-AI. How can I help you today?"})
+    
+    chatBoxes = st.columns(1)
+
+    if prompt:
+        j = len(st.session_state.Chats)
+        # Display user message in chat message container
+        chatBoxes.append(st.container(height=600))
+    
+        st.session_state.Chats.append([])
+        st.session_state.Chats[j].append({"role": "user", "content": default_chat_input_value})
+        st.session_state.Chats[j].append({"role": "ai", "content": default_chat_input_value, "assistantGraph": assistantGraph})
+
+
+
+# DONE Have the map ygit made
+# DONE multi select companies (1-x)
+# DONE select category (unique "subcategory")
+# DONE choose correct prompt according to selected category
+# DONE fill the placeholders of the prompt with the company names
+# (Optional) upload file and add to the prompt
+# DONE (optinal) add checkbox for graphical output?
+# send prompt to openai api
+# add response to "chat" window
+
+# selectedCompanies[] += streamlit.mapstuff
+# selectedCategory = streamlit.dropdown
+# matchingPrompt = selectPrompt(selectedCompanies, selectedCategory)
+attachment = uploadFile()
+preparedApiRequest = constructApiRequest(matchingPrompt, attachmet)
+chatWindow.append(askGpt(preparedApiRequest))
+
+''' prompts = {
+    "abc": [
+        "give value for {placeholder}",
+        "compare company {placeholderA} and company {placeholderB}",
+    ]
+}
+def selectPrompt(selectedCompanies, selectedCategory):
+    placeholderPrompt = prompts[selectedCategory][len(selectedCompanies - 1)]
+    return placeholderPrompt.replace(selectedCompanies) 
+'''
+#try to code here: Jennifer
