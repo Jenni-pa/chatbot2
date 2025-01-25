@@ -8,7 +8,7 @@ import re
 from io import StringIO
 
 st.title("Find companies you are looking for")
-st.logo("Logo.png")
+st.logo("Logo.png", size="large")
 
 companies = {
     "Saudi Aramco": {
