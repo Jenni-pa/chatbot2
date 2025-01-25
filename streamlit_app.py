@@ -197,7 +197,10 @@ elif len(pickedCompanies) == 3:
         if st.button("send question"):
             result = askgpt(prompts["3 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1], companyC=pickedCompanies[2]), None)
 
-st.write(f"Command Output: {result}")
+st.markdown(f"Command Output: {result}", unsafe_allow_html=True)
+
+# ASCI doc parser? 
+
 #def run_command_page():
 #    st.title("Ask GPT")
 #    st.write("Testing calling the script to interact with the openai api")

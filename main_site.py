@@ -194,8 +194,8 @@ with col50:
 # DONE fill the placeholders of the prompt with the company names
 # (Optional) upload file and add to the prompt
 # DONE (optinal) add checkbox for graphical output?
-# send prompt to openai api
-# add response to "chat" window
+# DONE send prompt to openai api
+# DONE add response to "chat" window
 
 # selectedCompanies[] += streamlit.mapstuff
 # selectedCategory = streamlit.dropdown
