@@ -8,8 +8,7 @@ import re
 from io import StringIO
 
 st.title("Find companies you are looking for")
-logoBinary = open("Logo.png", "rb")
-st.logo(logoBinary)
+st.logo("Logo.png")
 
 companies = {
     "Saudi Aramco": {
