@@ -68,7 +68,7 @@ companies = {
 }
 
 if 'companies' not in st.session_state:
-    st.session_state['companies'] = pd.DataFrame(st.session_state.companies.items(), columns=["Name", "properties"])
+    st.session_state['companies'] = pd.DataFrame(companies.items(), columns=["Name", "properties"])
     #setting latitude and longitude,  the country and city:
     st.session_state.companies[["Latitude", "Longitude", "Country", "City"]] = pd.DataFrame(st.session_state.companies["properties"].tolist(), index=st.session_state.companies.index)
     #adding a size column to the companies dataframe
