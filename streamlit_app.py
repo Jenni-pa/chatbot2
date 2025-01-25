@@ -231,7 +231,7 @@ else:
 if 'listOfResponses' not in st.session_state :
     st.session_state['listOfResponses'] = []
 
-if response is not None:
+if response is not "":
     st.session_state['listOfResponses'].append(response)
 
 for message in st.session_state['listOfResponses']:
