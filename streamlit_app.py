@@ -198,8 +198,7 @@ if st.button("send question"):
 
 # Check if the variable is not None
 if result is not None:
-    # Use regex to remove text within parentheses
-    response = re.sub(r"\【[^)]*\】", "", result)
+
     # bar chart maker for c02 2 companies
     start_marker = "---chart-data-start---"
     end_marker = "---chart-data-end---"
@@ -215,7 +214,8 @@ if result is not None:
     # Display in Streamlit
     st.bar_chart(df.set_index('Year'))
 
-    response = re.sub(r"\---chart-data-start---[^)]*\---chart-data-end---", "", result)
+    # Use regex to remove text within parentheses and data
+    response = re.sub(r"\【[^)]*\】" and r"\---chart-data-start---[^)]*\---chart-data-end---", "", result)
 else:
     response = ""  # Or handle None as needed
 
