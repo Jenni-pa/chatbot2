@@ -234,7 +234,7 @@ if 'listOfResponses' not in st.session_state :
 st.session_state['listOfResponses'].append(response)
 
 for message in st.session_state['listOfResponses']:
-    with st.chat_message("ESG.IQ"):
+    with st.chat_message("ai", avatar="Avatar.png"):
         st.write(message)
 
 # st.markdown(f"Command Output: {response}", unsafe_allow_html=True)
