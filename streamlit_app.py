@@ -191,6 +191,8 @@ elif len(pickedCompanies) == 2:
     else:
         st.markdown(prompts["2 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1]))
         if st.button("send question"):
+            st.write(prompts["2 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1]))
+            st.write(newCompany.id if newCompany is not None else None )
             result = askgpt(prompts["2 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1]), newCompany.id if newCompany is not None else None)
 elif len(pickedCompanies) == 3:
     if graphicalOutput == "yes":
