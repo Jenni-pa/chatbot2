@@ -7,6 +7,12 @@ from cod import askgpt, fileupload
 import re
 from io import StringIO
 
+st.markdown(f'<style>
+            .stLogo {
+                 height: "6rem";
+            }
+            </style>', unsafe_allow_html=True)
+
 st.title("Find companies you are looking for")
 st.logo("Logo.png", size="large")
 
