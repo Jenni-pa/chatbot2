@@ -195,7 +195,7 @@ if st.button("send question"):
             st.markdown(prompts["3 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1], companyC=pickedCompanies[2]))
             result = askgpt(prompts["3 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1], companyC=pickedCompanies[2]), st.session_state.newCompany.id if st.session_state.newCompany is not None else None)
 
-response = re.sub(r"\【[^】]*\)", "", result)
+response = re.sub(r"\【[^)]*\】", "", result)
 st.markdown(f"Command Output: {response}", unsafe_allow_html=True)
 
 # visualization graph
