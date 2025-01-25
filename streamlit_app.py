@@ -5,6 +5,7 @@ import streamlit.components.v1 as components
 from streamlit import session_state as ss
 from cod import askgpt, fileupload
 import re
+from io import StringIO
 
 st.title("Find companies you are looking for")
 
@@ -142,6 +143,10 @@ else:
 if 'newCompany' not in st.session_state: 
     st.session_state['newCompany'] = None
 
+graphicalOutput = None
+graphicalOutput = st.radio("Do you want to visualize your question with a graph?", ["yes","no"])
+result = None
+
 if len(pickedCompanies) > 2:
     st.markdown("You can not add another company, please deselect at least one of your chosen companies to upload your own.")
 else :
@@ -165,9 +170,6 @@ else :
                         st.session_state.companies._append(new_company, ignore_index=True)
                         st.session_state.addedCompany = True
 
-graphicalOutput = None
-graphicalOutput = st.radio("Do you want to visualize your question with a graph?", ["yes","no"])
-result = None
 
 if st.session_state.addedCompany == True :
     addedCompanyChosen = st.radio(f"Select your added company {NameOfCmpny}?", ["yes","no"])
@@ -182,18 +184,16 @@ if st.button("send question"):
             result = askgpt(prompts["one company"].format(category=chosenCategory, company=pickedCompanies[0]), st.session_state.newCompany.id if st.session_state.newCompany is not None else None)
     elif len(pickedCompanies) == 2:
         if graphicalOutput == "yes":
-            st.markdown(prompts["2 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1])+" Also show me a meaningful graph to visualize key numbers and differences.")
-            result = askgpt(prompts["2 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1])+" Also show me a meaningful graph to visualize key numbers and differences.", st.session_state.newCompany.id if st.session_state.newCompany is not None else None)
+            if chosenCategory == "CO2 emissions":
+                result = askgpt(prompts["2 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1])+" Provide CO₂ emissions data of both companies in a format suitable for use in a st.bar_chart in Streamlit. The data should be enclosed between ---chart-data-start--- and ---chart-data-end---, with no additional text remarking the graph. The first row should contain the column headers, and each subsequent row should have the year and the corresponding emissions value (in metric tons). There will be explanatory text before and after the chart data, so ensure the markers ---chart-data-start--- and ---chart-data-end--- clearly delimit the data section.", st.session_state.newCompany.id if st.session_state.newCompany is not None else None)
+            else:
+                result = askgpt(prompts["2 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1])+" Also show me a meaningful graph to visualize key numbers and differences.", st.session_state.newCompany.id if st.session_state.newCompany is not None else None)
         else:
-            st.write(prompts["2 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1]))
-            st.write(st.session_state.newCompany.id if st.session_state.newCompany is not None else None )
             result = askgpt(prompts["2 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1]), st.session_state.newCompany.id if st.session_state.newCompany is not None else None)
     elif len(pickedCompanies) == 3:
         if graphicalOutput == "yes":
-            st.markdown(prompts["3 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1], companyC=pickedCompanies[2])+" Also show me a meaningful graph to visualize key numbers and differences.")
             result = askgpt(prompts["3 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1], companyC=pickedCompanies[2])+" Also show me a meaningful graph to visualize key numbers and differences.", st.session_state.newCompany.id if st.session_state.newCompany is not None else None)
         else:
-            st.markdown(prompts["3 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1], companyC=pickedCompanies[2]))
             result = askgpt(prompts["3 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1], companyC=pickedCompanies[2]), st.session_state.newCompany.id if st.session_state.newCompany is not None else None)
 
 # Check if the variable is not None
@@ -203,8 +203,23 @@ if result is not None:
 else:
     response = ""  # Or handle None as needed
 
+# bar chart maker for c02 2 companies
+start_marker = "---chart-data-start---"
+end_marker = "---chart-data-end---"
+
+data_start = response.find(start_marker) + len(start_marker)
+data_end = response.find(end_marker)
+
+data = response[data_start:data_end].strip()
+
+# Convert to DataFrame
+df = pd.read_csv(StringIO(data))
+
+# Display in Streamlit
+st.bar_chart(df.set_index('Year'))
+
 st.markdown(f"Command Output: {response}", unsafe_allow_html=True)
 
 # visualization graph
-# remove sources
-# reformat to look better
+# reformat to look better --> chat output for output
+# add logo to corner *ESG.IQ*
