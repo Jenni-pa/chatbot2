@@ -205,7 +205,7 @@ if st.button("send question"):
 
 if result != None:
     st.write(result)
-    response = re.sub(r"\【[^)]*\】", "", result)
+    response = re.sub(r"\【.*\】", "", result)
 
     if (graphicalOutput == "yes" and chosenCategory == "CO2 emissions"):
         # bar chart maker for c02 2 companies
