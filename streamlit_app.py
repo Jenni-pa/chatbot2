@@ -216,7 +216,8 @@ if result is not None:
 
     # Use regex to remove text within parentheses and data
     response = re.sub(r"\【[^)]*\】", "", result)
-    response = re.sub(r"((---chart-data-start---).*(---chart-data-end---))","", response, flags = re.MULTILINE | re.DOTALL)
+    #response = re.sub(r"((---chart-data-start---).*(---chart-data-end---))","", response, flags = re.MULTILINE | re.DOTALL)
+    response = re.sub(r"(\#{3}(?!.*\#{3})).*", "", response, flags = re.DOTALL)
 else:
     response = ""  # Or handle None as needed
 
