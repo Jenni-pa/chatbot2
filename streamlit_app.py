@@ -195,7 +195,14 @@ if st.button("send question"):
             st.markdown(prompts["3 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1], companyC=pickedCompanies[2]))
             result = askgpt(prompts["3 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1], companyC=pickedCompanies[2]), st.session_state.newCompany.id if st.session_state.newCompany is not None else None)
 
-response = re.sub(r"\【[^)]*\】", "", result)
+
+while "【" in result and "】" in result:
+    # Find the first pair of parentheses
+    start = result.find("【")
+    end = result.find("】", start)
+    # Remove the text within the parentheses, including the parentheses themselves
+    response = result[:start] + result[end + 1:]
+
 st.markdown(f"Command Output: {response}", unsafe_allow_html=True)
 
 # visualization graph
