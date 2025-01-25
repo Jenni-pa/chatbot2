@@ -185,7 +185,7 @@ if st.button("send question"):
     elif len(pickedCompanies) == 2:
         if graphicalOutput == "yes":
             if chosenCategory == "CO2 emissions":
-                result = askgpt(prompts["2 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1])+" Provide CO₂ emissions data of both companies in a format suitable for use in a st.bar_chart in Streamlit. The data should be enclosed between ---chart-data-start--- and ---chart-data-end---, with no additional text remarking the graph. The first row should contain the column headers, and each subsequent row should have the year and the corresponding emissions value (in metric tons). There will be explanatory text before and after the chart data, so ensure the markers ---chart-data-start--- and ---chart-data-end--- clearly delimit the data section.", st.session_state.newCompany.id if st.session_state.newCompany is not None else None)
+                result = askgpt(prompts["2 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1])+" Provide CO₂ emissions data of both companies in a format suitable for use in a st.bar_chart in Streamlit. The data should be enclosed between ---chart-data-start--- and ---chart-data-end---, with no additional text remarking the graph. The first row should contain the column headers, and each subsequent row should have the year and the corresponding emissions value (in metric tons). There will be explanatory text before and after the chart data, so ensure the markers ---chart-data-start--- and ---chart-data-end--- clearly delimit the data section. The data section should not be remarked upon any further or contain any other text other than the data for the graph.", st.session_state.newCompany.id if st.session_state.newCompany is not None else None)
             else:
                 result = askgpt(prompts["2 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1])+" Also show me a meaningful graph to visualize key numbers and differences.", st.session_state.newCompany.id if st.session_state.newCompany is not None else None)
         else:
@@ -208,16 +208,18 @@ if result is not None:
     start_marker = "---chart-data-start---"
     end_marker = "---chart-data-end---"
 
-    data_start = response.find(start_marker) + len(start_marker)
-    data_end = response.find(end_marker)
+    data_start = result.find(start_marker) + len(start_marker)
+    data_end = result.find(end_marker)
 
-    data = response[data_start:data_end].strip()
+    data = result[data_start:data_end].strip()
 
     # Convert to DataFrame
     df = pd.read_csv(StringIO(data))
 
     # Display in Streamlit
     st.bar_chart(df.set_index('Year'))
+
+    response = re.sub(r"\---chart-data-start---[^)]*\---chart-data-end---", "", result)
 else:
     response = ""
 
