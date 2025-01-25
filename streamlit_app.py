@@ -175,35 +175,35 @@ result = None
 if len(pickedCompanies) == 1:
     if graphicalOutput == "yes":
         st.markdown(prompts["one company"].format(category=chosenCategory, company=pickedCompanies[0])+" Also show me a meaningful graph to visualize key numbers.")
-        if st.button("send question"):
+        if st.button("send question", "p1y"):
             st.write(prompts["one company"].format(category=chosenCategory, company=pickedCompanies[0])+" Also show me a meaningful graph to visualize key numbers.")
             st.write(st.session_state.newCompany.id if st.session_state.newCompany is not None else None )
             result = askgpt(prompts["one company"].format(category=chosenCategory, company=pickedCompanies[0])+" Also show me a meaningful graph to visualize key numbers.", st.session_state.newCompany.id if st.session_state.newCompany is not None else None )
     else:
         st.markdown(prompts["one company"].format(category=chosenCategory, company=pickedCompanies[0]))
-        if st.button("send question"):
+        if st.button("send question", "p1n"):
             st.write(prompts["one company"].format(category=chosenCategory, company=pickedCompanies[0]))
             st.write(st.session_state.newCompany.id if st.session_state.newCompany is not None else None )
             result = askgpt(prompts["one company"].format(category=chosenCategory, company=pickedCompanies[0]), st.session_state.newCompany.id if st.session_state.newCompany is not None else None)
 elif len(pickedCompanies) == 2:
     if graphicalOutput == "yes":
         st.markdown(prompts["2 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1])+" Also show me a meaningful graph to visualize key numbers and differences.")
-        if st.button("send question"):
+        if st.button("send question", "p2y"):
             result = askgpt(prompts["2 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1])+" Also show me a meaningful graph to visualize key numbers and differences.", st.session_state.newCompany.id if st.session_state.newCompany is not None else None)
     else:
         st.markdown(prompts["2 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1]))
-        if st.button("send question"):
+        if st.button("send question", "p2n"):
             st.write(prompts["2 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1]))
             st.write(st.session_state.newCompany.id if st.session_state.newCompany is not None else None )
             result = askgpt(prompts["2 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1]), st.session_state.newCompany.id if st.session_state.newCompany is not None else None)
 elif len(pickedCompanies) == 3:
     if graphicalOutput == "yes":
         st.markdown(prompts["3 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1], companyC=pickedCompanies[2])+" Also show me a meaningful graph to visualize key numbers and differences.")
-        if st.button("send question"):
+        if st.button("send question", "p3y"):
             result = askgpt(prompts["3 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1], companyC=pickedCompanies[2])+" Also show me a meaningful graph to visualize key numbers and differences.", st.session_state.newCompany.id if st.session_state.newCompany is not None else None)
     else:
         st.markdown(prompts["3 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1], companyC=pickedCompanies[2]))
-        if st.button("send question"):
+        if st.button("send question", "p3n"):
             result = askgpt(prompts["3 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1], companyC=pickedCompanies[2]), st.session_state.newCompany.id if st.session_state.newCompany is not None else None)
 
 st.markdown(f"Command Output: {result}", unsafe_allow_html=True)
