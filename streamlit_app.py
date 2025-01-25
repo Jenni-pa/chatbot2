@@ -67,16 +67,16 @@ companies = {
     }
 }
 
-#reformatting companies to be in the same format as Names with their latitude and longitude
-companies = pd.DataFrame(companies.items(), columns=["Name", "properties"])
-#setting latitude and longitude,  the country and city:
-companies[["Latitude", "Longitude", "Country", "City"]] = pd.DataFrame(companies["properties"].tolist(), index=companies.index)
-#adding a size column to the companies dataframe
-companies["size"] = 90000
+if 'companies' not in st.session_state:
+    st.session_state['companies'] = pd.DataFrame(companies.items(), columns=["Name", "properties"])
+    #setting latitude and longitude,  the country and city:
+    st.session_state.companies[["Latitude", "Longitude", "Country", "City"]] = pd.DataFrame(companies["properties"].tolist(), index=companies.index)
+    #adding a size column to the companies dataframe
+    st.session_state.companies["size"] = 90000
 
 point_layer2 = pydeck.Layer(
     "ScatterplotLayer",
-    data=companies,
+    data=st.session_state.companies,
     id="companies",
     get_position=["Longitude", "Latitude"],
     get_color="[75, 75, 255, 205]",
@@ -106,12 +106,12 @@ try:
 except :
     selectedcompanies = []
 
-st.session_state["allCompanies"] = companies
+st.session_state["allCompanies"] = st.session_state.companies
 if len(selectedcompanies) > 0:
     company_names = [company["Name"] for company in selectedcompanies]
-    pickedCompanies = st.multiselect("Selected Companie(s)", companies, company_names, max_selections=3)
+    pickedCompanies = st.multiselect("Selected Companie(s)", st.session_state.companies, company_names, max_selections=3)
 else:
-    pickedCompanies = st.multiselect("Selected Companie(s)", companies, max_selections=3)
+    pickedCompanies = st.multiselect("Selected Companie(s)", st.session_state.companies, max_selections=3)
 
 prompts = {
         "one company": 
@@ -158,7 +158,7 @@ else :
                         "size": 90000         # Default size
                         }
                         st.session_state.newCompany = fileupload(uploaded_file.read())
-                        companies._append(new_company, ignore_index=True)
+                        st.session_state.companies._append(new_company, ignore_index=True)
                         addedCompany = True
 
 
