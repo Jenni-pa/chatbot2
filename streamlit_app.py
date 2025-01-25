@@ -223,8 +223,6 @@ if result != None:
 
         # Use regex to remove text within parentheses and data
         response = re.sub(r"(\#{3}(?!.*\#{3})).*", "", response, flags = re.DOTALL)
-    else:
-        response = result
 else:
      response = ""
      
