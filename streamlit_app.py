@@ -97,7 +97,8 @@ chart2 = pydeck.Deck(
 
 event = st.pydeck_chart(chart2, on_select="rerun", selection_mode="multi-object")
 
-addedCompany = None
+if 'addedCompany' not in st.session_state:
+    st.session_state['addedCompany'] = None
 addedCompanyChosen = None
 
 # add check that map added companies less than 3
@@ -159,10 +160,10 @@ else :
                         }
                         st.session_state.newCompany = fileupload(uploaded_file.name, uploaded_file.read())
                         st.session_state.companies._append(new_company, ignore_index=True)
-                        addedCompany = True
+                        st.session_state.addedCompany = True
 
 
-if addedCompany == True :
+if st.session_state.addedCompany == True :
     addedCompanyChosen = st.radio(f"Select your added company {NameOfCmpny}?", ["yes","no"])
 if addedCompanyChosen == "yes":
     pickedCompanies.append(NameOfCmpny)
