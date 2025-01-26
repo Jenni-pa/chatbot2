@@ -206,7 +206,7 @@ if st.button("send question"):
 barchartDataFrame = None
 if result != None:
     response = re.sub(r"\【.*\】", "", result)
-    if (graphicalOutput == "yes" and chosenCategory == "CO2 emissions" and pickedCompanies == 2):
+    if (graphicalOutput == "yes" and chosenCategory == "CO2 emissions" and len(pickedCompanies) == 2):
         try: 
             # bar chart maker for c02 2 companies
             start_marker = "---chart-data-start---"
@@ -215,9 +215,6 @@ if result != None:
             data_start = result.find(start_marker) + len(start_marker)
             data_end = result.find(end_marker)
             data = result[data_start:data_end].strip()
-
-            st.write("data:")
-            st.write(data)
 
             # Convert to DataFrame
             barchartDataFrame = pd.read_csv(StringIO(data))
