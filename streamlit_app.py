@@ -227,7 +227,7 @@ if result != None:
             # use regex to remove chart data in case upper regex did not
             response = re.sub(r"(---chart-data-start---).*(---chart-data-end---)", "", response, flags = re.DOTALL)
             # add barchart to response
-            response += barchart
+            response.append(barchart)
         except:
             response = re.sub(r"(\#{3}(?!.*(summary|conclusion))(?!.*\#{3})).*", "", response, flags = re.DOTALL | re.IGNORECASE)
             response += "<br/>**Graphic could not be generated**"
