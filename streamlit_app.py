@@ -240,4 +240,7 @@ for message, chartData in reversed(st.session_state['listOfResponses']):
     with st.chat_message("user", avatar="Avatar.png"):
         st.markdown(message, unsafe_allow_html=True)
         if chartData is not None:
-            st.bar_chart(chartData.set_index('Year'))
+            try:
+                st.bar_chart(chartData.set_index('Year'))
+            except:
+                st.markdown("**Graphic could not be generated**")
