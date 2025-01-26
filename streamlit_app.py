@@ -222,10 +222,12 @@ if result != None:
             # Display in Streamlit
             st.bar_chart(df.set_index('Year'))
 
-            # Use regex to remove text within parentheses and data
-            response = re.sub(r"(\#{3}(?!.*\#{3})).*", "", response, flags = re.DOTALL)
+            # Use regex to remove last paragraph unless its the conclusion/summary
+            response = re.sub(r"(\#{3}(?!.*(summary|conclusion))(?!.*\#{3})).*", "", response, flags = re.DOTALL | re.IGNORECASE)
+            # use regex to remove chart data in case upper regex did not
+            response = re.sub(r"(---chart-data-start---).*(---chart-data-end---)", "", response, flags = re.DOTALL)
         except:
-            response = re.sub(r"(\#{3}(?!.*\#{3})).*", "", response, flags = re.DOTALL)
+            response = re.sub(r"(\#{3}(?!.*(summary|conclusion))(?!.*\#{3})).*", "", response, flags = re.DOTALL | re.IGNORECASE)
             response += "<br/>**Graphic could not be generated**"
 else:
      response = ""
