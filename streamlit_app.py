@@ -237,8 +237,3 @@ if response is not "":
 for message in st.session_state['listOfResponses']:
     with st.chat_message("user", avatar="Avatar.png"):
         st.write(message)
-
-# st.markdown(f"Command Output: {response}", unsafe_allow_html=True)
-
-# reformat to look better --> chat output for output
-# add logo to corner *ESG.IQ*
