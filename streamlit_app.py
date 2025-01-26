@@ -110,7 +110,7 @@ if 'addedCompany' not in st.session_state:
     st.session_state['addedCompany'] = None
 addedCompanyChosen = None
 
-st.markdown("You can compare up to three companies at once.") 
+st.markdown("This tool uses AI, AI can make mistakes. Please check important information. You can compare up to three companies at once.") 
 
 try:
     selectedcompanies = event.selection["objects"]["companies"]
