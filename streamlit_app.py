@@ -203,7 +203,6 @@ if st.button("send question"):
         else:
             result = askgpt(prompts["3 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1], companyC=pickedCompanies[2]), st.session_state.newCompany.id if st.session_state.newCompany is not None else None)
 
-barchart = None
 if result != None:
     response = re.sub(r"\【.*\】", "", result)
     if (graphicalOutput == "yes" and chosenCategory == "CO2 emissions"):
@@ -217,30 +216,27 @@ if result != None:
             data = result[data_start:data_end].strip()
 
             # Convert to DataFrame
-            df = pd.read_csv(StringIO(data))
-
-            # make barchart
-            barchart = st.bar_chart(df.set_index('Year'))
+            barchartDataFrame = pd.read_csv(StringIO(data))
 
             # Use regex to remove last paragraph unless its the conclusion/summary
             # response = re.sub(r"(\#{3}(?!.*(summary|conclusion))(?!.*\#{3})).*", "", response, flags = re.DOTALL | re.IGNORECASE)
             # use regex to remove chart data in case upper regex did not
             response = re.sub(r"(---chart-data-start---).*(---chart-data-end---)", "", response, flags = re.DOTALL)
-            # add barchart to response
-            response.append(barchart)
         except:
             response = re.sub(r"(\#{3}(?!.*(summary|conclusion))(?!.*\#{3})).*", "", response, flags = re.DOTALL | re.IGNORECASE)
             response += "<br/>**Graphic could not be generated**"
 else:
     response = ""
-     
 
+     
 if 'listOfResponses' not in st.session_state :
     st.session_state['listOfResponses'] = []
 
 if response is not "":
-    st.session_state['listOfResponses'].append(response)
+    st.session_state['listOfResponses'].append((response, barchartDataFrame))
 
-for message in st.session_state['listOfResponses']:
+for message, chartData in st.session_state['listOfResponses']:
     with st.chat_message("user", avatar="Avatar.png"):
         st.markdown(message, unsafe_allow_html=True)
+        if chartData is not None:
+            st.bar_chart(chartData.set_index('Year'))
