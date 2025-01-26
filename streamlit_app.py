@@ -220,6 +220,8 @@ if result != None:
             # Convert to DataFrame
             barchartDataFrame = pd.read_csv(StringIO(data))
 
+            st.write(data)
+
             # Use regex to remove last paragraph unless its the conclusion/summary
             # response = re.sub(r"(\#{3}(?!.*(summary|conclusion))(?!.*\#{3})).*", "", response, flags = re.DOTALL | re.IGNORECASE)
             # use regex to remove chart data in case upper regex did not
