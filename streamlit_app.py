@@ -204,26 +204,30 @@ if st.button("send question"):
             result = askgpt(prompts["3 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1], companyC=pickedCompanies[2]), st.session_state.newCompany.id if st.session_state.newCompany is not None else None)
 
 if result != None:
-    st.write(result)
     response = re.sub(r"\【.*\】", "", result)
 
     if (graphicalOutput == "yes" and chosenCategory == "CO2 emissions"):
-        # bar chart maker for c02 2 companies
-        start_marker = "---chart-data-start---"
-        end_marker = "---chart-data-end---"
+        try: 
+            raise Exception("kaput") 
+            # bar chart maker for c02 2 companies
+            start_marker = "---chart-data-start---"
+            end_marker = "---chart-data-end---"
 
-        data_start = result.find(start_marker) + len(start_marker)
-        data_end = result.find(end_marker)
-        data = result[data_start:data_end].strip()
+            data_start = result.find(start_marker) + len(start_marker)
+            data_end = result.find(end_marker)
+            data = result[data_start:data_end].strip()
 
-        # Convert to DataFrame
-        df = pd.read_csv(StringIO(data))
+            # Convert to DataFrame
+            df = pd.read_csv(StringIO(data))
 
-        # Display in Streamlit
-        st.bar_chart(df.set_index('Year'))
+            # Display in Streamlit
+            st.bar_chart(df.set_index('Year'))
 
-        # Use regex to remove text within parentheses and data
-        response = re.sub(r"(\#{3}(?!.*\#{3})).*", "", response, flags = re.DOTALL)
+            # Use regex to remove text within parentheses and data
+            response = re.sub(r"(\#{3}(?!.*\#{3})).*", "", response, flags = re.DOTALL)
+        except:
+            response += "\n Graphic could not be generated"
+            pass
 else:
      response = ""
      
