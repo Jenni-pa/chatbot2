@@ -226,7 +226,8 @@ if result != None:
             # Use regex to remove text within parentheses and data
             response = re.sub(r"(\#{3}(?!.*\#{3})).*", "", response, flags = re.DOTALL)
         except:
-            response += "\n Graphic could not be generated"
+            response = re.sub(r"(\#{3}(?!.*\#{3})).*", "", response, flags = re.DOTALL)
+            response += "<br /> **Graphic could not be generated**"
             pass
 else:
      response = ""
