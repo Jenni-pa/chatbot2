@@ -206,7 +206,7 @@ if st.button("send question"):
 barchartDataFrame = None
 if result != None:
     response = re.sub(r"\【.*\】", "", result)
-    if (graphicalOutput == "yes" and chosenCategory == "CO2 emissions"):
+    if (graphicalOutput == "yes" and chosenCategory == "CO2 emissions" and pickedCompanies == 2):
         try: 
             # bar chart maker for c02 2 companies
             start_marker = "---chart-data-start---"
