@@ -227,7 +227,7 @@ if result != None:
             response = re.sub(r"(\#{3}(?!.*\#{3})).*", "", response, flags = re.DOTALL)
         except:
             response = re.sub(r"(\#{3}(?!.*\#{3})).*", "", response, flags = re.DOTALL)
-            response += "<br /> **Graphic could not be generated**"
+            response += "<br/>**Graphic could not be generated**"
             pass
 else:
      response = ""
@@ -241,4 +241,4 @@ if response is not "":
 
 for message in st.session_state['listOfResponses']:
     with st.chat_message("user", avatar="Avatar.png"):
-        st.write(message)
+        st.markdown(message, unsafe_allow_html=True)
