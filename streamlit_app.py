@@ -206,7 +206,6 @@ if st.button("send question"):
 barchartDataFrame = None
 if result != None:
     response = re.sub(r"\【.*\】", "", result)
-    st.write(pickedCompanies)
     if (graphicalOutput == "yes" and chosenCategory == "CO2 emissions" and pickedCompanies == 2):
         try: 
             # bar chart maker for c02 2 companies
@@ -217,10 +216,11 @@ if result != None:
             data_end = result.find(end_marker)
             data = result[data_start:data_end].strip()
 
+            st.write("data:")
+            st.write(data)
+
             # Convert to DataFrame
             barchartDataFrame = pd.read_csv(StringIO(data))
-
-            st.write(data)
 
             # Use regex to remove last paragraph unless its the conclusion/summary
             # response = re.sub(r"(\#{3}(?!.*(summary|conclusion))(?!.*\#{3})).*", "", response, flags = re.DOTALL | re.IGNORECASE)
@@ -238,8 +238,6 @@ if 'listOfResponses' not in st.session_state :
 
 if response is not "":
     st.session_state['listOfResponses'].append((response, barchartDataFrame))
-
-st.write(barchartDataFrame)
 
 for message, chartData in reversed(st.session_state['listOfResponses']):
     with st.chat_message("user", avatar="Avatar.png"):
