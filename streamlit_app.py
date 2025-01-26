@@ -208,7 +208,6 @@ if result != None:
 
     if (graphicalOutput == "yes" and chosenCategory == "CO2 emissions"):
         try: 
-            raise Exception("kaput") 
             # bar chart maker for c02 2 companies
             start_marker = "---chart-data-start---"
             end_marker = "---chart-data-end---"
@@ -228,7 +227,6 @@ if result != None:
         except:
             response = re.sub(r"(\#{3}(?!.*\#{3})).*", "", response, flags = re.DOTALL)
             response += "<br/>**Graphic could not be generated**"
-            pass
 else:
      response = ""
      
