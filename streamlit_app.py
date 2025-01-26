@@ -236,7 +236,7 @@ if 'listOfResponses' not in st.session_state :
 if response is not "":
     st.session_state['listOfResponses'].append((response, barchartDataFrame))
 
-for message, chartData in st.session_state['listOfResponses']:
+for message, chartData in reversed(st.session_state['listOfResponses']):
     with st.chat_message("user", avatar="Avatar.png"):
         st.markdown(message, unsafe_allow_html=True)
         if chartData is not None:
