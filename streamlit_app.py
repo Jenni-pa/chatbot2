@@ -203,6 +203,7 @@ if st.button("send question"):
         else:
             result = askgpt(prompts["3 companies"].format(category=chosenCategory, companyA=pickedCompanies[0], companyB=pickedCompanies[1], companyC=pickedCompanies[2]), st.session_state.newCompany.id if st.session_state.newCompany is not None else None)
 
+barchartDataFrame = None
 if result != None:
     response = re.sub(r"\【.*\】", "", result)
     if (graphicalOutput == "yes" and chosenCategory == "CO2 emissions"):
