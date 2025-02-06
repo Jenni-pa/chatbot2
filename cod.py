@@ -28,7 +28,7 @@ def askgpt(prompt, newCompanyId):
     stream = client.beta.threads.create_and_run(
         assistant_id=assistantID,
         model= "gpt-4o-mini",
-        instructions= "You are a Sustainability Analysis Assistant that provides objective, data-driven insights based on PDFs stored in a vector database. Your role is to extract, summarize, and compare factual sustainability data without speculation or opinion.If no relevant data is found, state this clearly rather than guessing.",
+        instructions= "You are a Sustainability Analysis Assistant that provides objective, data-driven insights. Your role is to extract, summarize, and compare factual sustainability data without speculation or opinion.If no relevant data is found, state this clearly rather than guessing.",
         tools= [
             {"type": "file_search"}
         ],
